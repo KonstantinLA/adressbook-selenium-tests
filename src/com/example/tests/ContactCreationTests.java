@@ -4,28 +4,31 @@ import org.testng.annotations.Test;
 
 public class ContactCreationTests extends TestBase {
 	
+	
+	
+	
   @Test
-  public void testNonEmptyGroupCreation() throws Exception {
-	openMainPage();
-    goToGroupsPage();
-    initGroupCreation();
-    GroupData group = new GroupData();
-    group.name = "group name 1";
-    group.header = "header 1";
-    group.footer = "footer 1";
-	fillGroupForm(group);
-    submitGroupCreation();
-    returnToGroupsPage();
-  }
-
-  @Test
-  public void testEmptyGroupCreation() throws Exception {
-	openMainPage();
-    goToGroupsPage();
-    initGroupCreation();
-    fillGroupForm(new GroupData("", "", ""));
-    submitGroupCreation();
-    returnToGroupsPage();
+  public void testNewContactCreation() throws Exception {
+	  	openMainPage();
+	    goToAddNewPage();
+	    NewContactData newContact = new NewContactData();
+	    newContact.firstName = "First name";
+	    newContact.lastName = "Lirst name";
+	    newContact.adress = "adress";
+	    newContact.homePhone = "123456";
+	    newContact.mobilePhone = "1234567";
+	    newContact.workPhone = "12345678";
+	    newContact.mainEmail = "email@test.test";
+	    newContact.secondEmail = "email2@test.test";
+	    newContact.birthDay = "3";
+	    newContact.birthMonth = "May";
+	    newContact.birthYear = "1980";
+	    newContact.group = "group 1";
+	    newContact.secondAdress = "second adress";
+	    newContact.home = "home";
+	    fillAddNewContactForm(newContact);
+	    submitCreationForm();
+	    returnToHomePage();
   }
 }
 
