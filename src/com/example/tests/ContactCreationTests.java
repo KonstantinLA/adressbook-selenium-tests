@@ -9,8 +9,8 @@ public class ContactCreationTests extends TestBase {
 	
   @Test
   public void testNewContactCreation() throws Exception {
-	  	openMainPage();
-	    goToAddNewPage();
+	  	app.getNavigationHelper().openMainPage();
+	    app.getContactHelper().goToAddNewPage();
 	    NewContactData newContact = new NewContactData();
 	    newContact.firstName = "First name";
 	    newContact.lastName = "Lirst name";
@@ -26,9 +26,9 @@ public class ContactCreationTests extends TestBase {
 	    newContact.group = "group 1";
 	    newContact.secondAdress = "second adress";
 	    newContact.home = "home";
-	    fillAddNewContactForm(newContact);
-	    submitCreationForm();
-	    returnToHomePage();
+	    app.getContactHelper().fillAddNewContactForm(newContact);
+	    app.getContactHelper().submitCreationForm();
+	    app.getContactHelper().returnToHomePage();
   }
 }
 
