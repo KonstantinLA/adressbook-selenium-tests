@@ -38,5 +38,25 @@ public class ContactHelper extends HelperBase {
 	public void submitCreationForm() {
 	    click(By.name("submit"));
 	}
+	
+	public void initEditContact(int index){
+		click(By.xpath("//tr[@name='entry'][" + index + "]//a[contains(@href,'edit')]"));
+	}
+	
+	public void initDetailsContact(int index){
+		click(By.xpath("//tr[@name='entry'][" + index + "]//a[contains(@href,'view')]"));
+	}
+	
+	public void submitContactModification(){
+		click(By.name("update"));
+	}
+	
+	public void goToModifyContact(){
+		click(By.name("modifiy"));
+	}
+	
+	public void deleteContact(){
+		click(By.xpath("//input[@value='Delete']"));
+	}
 
 }
