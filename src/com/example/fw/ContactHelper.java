@@ -1,7 +1,10 @@
 package com.example.fw;
 
-import org.openqa.selenium.By;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import com.example.tests.NewContactData;
 
 public class ContactHelper extends HelperBase {
@@ -22,7 +25,7 @@ public class ContactHelper extends HelperBase {
 		selectByText(By.name("bday"), newContact.birthDay);
 		selectByText(By.name("bmonth"), newContact.birthMonth);
 		type(By.name("byear"), newContact.birthYear);
-		selectByText(By.name("new_group"), newContact.group);
+		selectByIndex(By.name("new_group"), newContact.group);
 		type(By.name("address2"), newContact.secondAdress);
 		type(By.name("phone2"), newContact.home);
 	}
@@ -40,11 +43,11 @@ public class ContactHelper extends HelperBase {
 	}
 	
 	public void initEditContact(int index){
-		click(By.xpath("//tr[@name='entry'][" + index + "]//a[contains(@href,'edit')]"));
+		click(By.xpath("//tr[@name='entry'][" + (index+1) + "]//a[contains(@href,'edit')]"));
 	}
 	
 	public void initDetailsContact(int index){
-		click(By.xpath("//tr[@name='entry'][" + index + "]//a[contains(@href,'view')]"));
+		click(By.xpath("//tr[@name='entry'][" + (index+1) + "]//a[contains(@href,'view')]"));
 	}
 	
 	public void submitContactModification(){
@@ -58,5 +61,18 @@ public class ContactHelper extends HelperBase {
 	public void deleteContact(){
 		click(By.xpath("//input[@value='Delete']"));
 	}
-
+	
+	public List<NewContactData> getContacts() {
+		List<NewContactData> contacts = new ArrayList<NewContactData>();
+		List<WebElement> rows = driver.findElements(By.name("entry"));
+		for (WebElement row : rows) {
+			NewContactData contact =  new NewContactData();
+			contact.lastName = row.findElement(By.xpath("td[2]")).getText();
+			contact.firstName = row.findElement(By.xpath("td[3]")).getText();
+			contact.mainEmail = row.findElement(By.xpath("td[4]")).getText();
+			contact.homePhone = row.findElement(By.xpath("td[5]")).getText();
+			contacts.add(contact);
+		}
+		return contacts;	
+	}
 }
