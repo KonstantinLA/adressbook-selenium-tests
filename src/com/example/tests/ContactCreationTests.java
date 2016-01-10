@@ -23,7 +23,7 @@ public class ContactCreationTests extends TestBase {
 	    newContact.birthDay = "3";
 	    newContact.birthMonth = "May";
 	    newContact.birthYear = "1980";
-	    newContact.group = "group 1";
+	    newContact.group = "group name 1";
 	    newContact.secondAdress = "second adress";
 	    newContact.home = "home";
 	    app.getContactHelper().fillAddNewContactForm(newContact);
