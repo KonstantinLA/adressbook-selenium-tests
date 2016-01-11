@@ -10,8 +10,8 @@ import org.testng.annotations.Test;
 
 public class ContactModifyTests extends TestBase {
 	
-	@Test
-	public void modifySomeContactFromEditPage(){
+	@Test(dataProvider = "randomValidContactGenerator")
+	public void modifySomeContactFromEditPage(NewContactData contactData){
 		app.getNavigationHelper().openMainPage();
 		app.getNavigationHelper().goToHomePage();
 		
@@ -21,11 +21,6 @@ public class ContactModifyTests extends TestBase {
 	    int index = rnd.nextInt(oldList.size() - 1);
 		
 		app.getContactHelper().initEditContact(index);
-		NewContactData contactData = new NewContactData();
-		contactData.firstName = "New First Name";
-		contactData.lastName = "New Last Name";
-		contactData.mainEmail = "new_email@test.test";
-		contactData.homePhone = "0123456";
 		app.getContactHelper().fillAddNewContactForm(contactData);
 		app.getContactHelper().submitContactModification();
 		app.getContactHelper().returnToHomePage();
@@ -39,8 +34,8 @@ public class ContactModifyTests extends TestBase {
 		
 	}
 	
-	@Test
-	public void modifySomeContactFromDetailsPage(){
+	@Test(dataProvider = "randomValidContactGenerator")
+	public void modifySomeContactFromDetailsPage(NewContactData contactData){
 		app.getNavigationHelper().openMainPage();
 		app.getNavigationHelper().goToHomePage();
 		
@@ -51,11 +46,6 @@ public class ContactModifyTests extends TestBase {
 	    
 		app.getContactHelper().initDetailsContact(index);
 		app.getContactHelper().goToModifyContact();
-		NewContactData contactData = new NewContactData();
-		contactData.firstName = "New First Name";
-		contactData.lastName = "New Last Name";
-		contactData.mainEmail = "new_email@test.test";
-		contactData.homePhone = "0123456";
 		app.getContactHelper().fillAddNewContactForm(contactData);
 		app.getContactHelper().submitContactModification();
 		app.getContactHelper().returnToHomePage();

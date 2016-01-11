@@ -1,8 +1,8 @@
 package com.example.tests;
 
 public class NewContactData implements Comparable<NewContactData> {
-	public String firstName;
-	public String lastName;
+	public String firstName = "";
+	public String lastName = "";
 	public String adress;
 	public String homePhone;
 	public String mobilePhone;
@@ -38,18 +38,15 @@ public class NewContactData implements Comparable<NewContactData> {
 	public NewContactData() {}
 
 	@Override
-	public String toString() {
-		return "NewContactData [firstName=" + firstName + ", lastName=" + lastName + ", adress=" + adress
-				+ ", homePhone=" + homePhone + ", mobilePhone=" + mobilePhone + ", workPhone=" + workPhone
-				+ ", mainEmail=" + mainEmail + ", secondEmail=" + secondEmail + ", birthDay=" + birthDay
-				+ ", birthMonth=" + birthMonth + ", birthYear=" + birthYear + ", group=" + group + ", secondAdress="
-				+ secondAdress + ", home=" + home + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		int result = 1;
 		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "NewContactData [firstName=" + firstName + ", lastName=" + lastName + ", homePhone=" + homePhone
+				+ ", mainEmail=" + mainEmail + "]";
 	}
 
 	@Override
@@ -61,32 +58,26 @@ public class NewContactData implements Comparable<NewContactData> {
 		if (getClass() != obj.getClass())
 			return false;
 		NewContactData other = (NewContactData) obj;
-		if (firstName == null) {
-			if (other.firstName != null)
-				return false;
-		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (homePhone == null) {
-			if (other.homePhone != null)
-				return false;
-		} else if (!homePhone.equals(other.homePhone))
-			return false;
 		if (lastName == null) {
 			if (other.lastName != null)
 				return false;
 		} else if (!lastName.equals(other.lastName))
-			return false;
-		if (mainEmail == null) {
-			if (other.mainEmail != null)
-				return false;
-		} else if (!mainEmail.equals(other.mainEmail))
 			return false;
 		return true;
 	}
 
 	@Override
 	public int compareTo(NewContactData other) {
-		return this.firstName.toLowerCase().compareTo(other.firstName.toLowerCase());
+		if(this.lastName == null)
+		{
+			this.lastName = "";
+		}
+		else if(other.lastName == null)
+		{
+			other.lastName = "";
+		}
+		return this.lastName.toLowerCase().compareTo(other.lastName.toLowerCase());
+		
 	}
 	
 	

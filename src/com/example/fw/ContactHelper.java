@@ -64,7 +64,7 @@ public class ContactHelper extends HelperBase {
 	
 	public List<NewContactData> getContacts() {
 		List<NewContactData> contacts = new ArrayList<NewContactData>();
-		List<WebElement> rows = driver.findElements(By.name("entry"));
+		List<WebElement> rows = driver.findElements(By.xpath("//*[@name='entry']"));
 		for (WebElement row : rows) {
 			NewContactData contact =  new NewContactData();
 			contact.lastName = row.findElement(By.xpath("td[2]")).getText();
