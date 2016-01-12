@@ -16,13 +16,14 @@ public class ApplicationManager {
 		driver = new FirefoxDriver();
 	    baseUrl = "http://localhost:8443/";
 	    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	    driver.get(baseUrl + "/addressbookv4.1.4/");
 	}
 	
 	public void Stop() {
 		driver.quit();
 	    }
 	
-	public NavigationHelper getNavigationHelper(){
+	public NavigationHelper navigateTo(){
 		if (navigationHelper == null) {
 			navigationHelper = new NavigationHelper(this);
 		}

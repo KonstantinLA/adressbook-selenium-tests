@@ -1,13 +1,8 @@
 package com.example.tests;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.Month;
-import java.time.MonthDay;
 import java.time.Year;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -18,10 +13,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
-
 import com.example.fw.ApplicationManager;
-
-import net.sf.cglib.core.Local;
 
 public class TestBase {
 	
@@ -41,10 +33,10 @@ public class TestBase {
 	public Iterator<Object[]> randomValidGroupGenerator(){
 		List<Object[]> list = new ArrayList<Object[]>();
 		for(int i = 0; i < 5; i++){
-			GroupData group = new GroupData();
-			group.name = generateRandomString();
-		    group.header = generateRandomString();
-		    group.footer = generateRandomString();
+			GroupData group = new GroupData()
+				.withName(generateRandomString())
+				.withHeader(generateRandomString())
+				.withFooter(generateRandomString());
 		    list.add(new Object[]{group});
 		}
 		return list.iterator();

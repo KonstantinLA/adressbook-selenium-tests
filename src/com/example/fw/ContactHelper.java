@@ -8,6 +8,9 @@ import org.openqa.selenium.WebElement;
 import com.example.tests.NewContactData;
 
 public class ContactHelper extends HelperBase {
+	
+	public static boolean CREATION = true;
+	public static boolean MODIFICATION = true;
 
 	public ContactHelper(ApplicationManager manager) {
 		super(manager);

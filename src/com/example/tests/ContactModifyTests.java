@@ -12,11 +12,12 @@ public class ContactModifyTests extends TestBase {
 	
 	@Test(dataProvider = "randomValidContactGenerator")
 	public void modifySomeContactFromEditPage(NewContactData contactData){
-		app.getNavigationHelper().openMainPage();
-		app.getNavigationHelper().goToHomePage();
+		app.navigateTo().mainPage();
 		
+		//save old state
 		List<NewContactData> oldList = app.getContactHelper().getContacts();
 		
+		//action
 		Random rnd = new Random();
 	    int index = rnd.nextInt(oldList.size() - 1);
 		
@@ -25,8 +26,10 @@ public class ContactModifyTests extends TestBase {
 		app.getContactHelper().submitContactModification();
 		app.getContactHelper().returnToHomePage();
 		
+		//save new state
 		List<NewContactData> newList = app.getContactHelper().getContacts();
 		
+		//compare states
 		oldList.remove(index);
 		oldList.add(contactData);
 	    Collections.sort(oldList);
@@ -36,8 +39,8 @@ public class ContactModifyTests extends TestBase {
 	
 	@Test(dataProvider = "randomValidContactGenerator")
 	public void modifySomeContactFromDetailsPage(NewContactData contactData){
-		app.getNavigationHelper().openMainPage();
-		app.getNavigationHelper().goToHomePage();
+		app.navigateTo().mainPage();
+		//app.navigateTo().goToHomePage();
 		
 		List<NewContactData> oldList = app.getContactHelper().getContacts();
 		
