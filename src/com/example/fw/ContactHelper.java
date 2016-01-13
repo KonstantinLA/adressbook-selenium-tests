@@ -1,19 +1,41 @@
 package com.example.fw;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import com.example.tests.NewContactData;
+import com.example.utils.SortedListOf;
 
 public class ContactHelper extends HelperBase {
 	
 	public static boolean CREATION = true;
 	public static boolean MODIFICATION = true;
+	private SortedListOf<NewContactData> cachedGroups;
 
 	public ContactHelper(ApplicationManager manager) {
 		super(manager);
+	}
+	
+	public SortedListOf<NewContactData> getContacts(){
+		if(cachedGroups == null){
+			rebuildCache();
+		}
+		return cachedGroups;
+	}
+	
+	private void rebuildCache() {
+		cachedGroups = new SortedListOf<NewContactData>();
+		
+		List<WebElement> rows = driver.findElements(By.xpath("//*[@name='entry']"));
+		for (WebElement row : rows) {
+			NewContactData contact =  new NewContactData();
+			contact.lastName = row.findElement(By.xpath("td[2]")).getText();
+			contact.firstName = row.findElement(By.xpath("td[3]")).getText();
+			contact.mainEmail = row.findElement(By.xpath("td[4]")).getText();
+			contact.homePhone = row.findElement(By.xpath("td[5]")).getText();
+			cachedGroups.add(contact);
+		}
 	}
 
 	public void fillAddNewContactForm(NewContactData newContact) {
@@ -39,6 +61,7 @@ public class ContactHelper extends HelperBase {
 
 	public void returnToHomePage() {
 		click(By.linkText("home page"));
+		rebuildCache();
 	}
 	
 	public void submitCreationForm() {
@@ -65,17 +88,5 @@ public class ContactHelper extends HelperBase {
 		click(By.xpath("//input[@value='Delete']"));
 	}
 	
-	public List<NewContactData> getContacts() {
-		List<NewContactData> contacts = new ArrayList<NewContactData>();
-		List<WebElement> rows = driver.findElements(By.xpath("//*[@name='entry']"));
-		for (WebElement row : rows) {
-			NewContactData contact =  new NewContactData();
-			contact.lastName = row.findElement(By.xpath("td[2]")).getText();
-			contact.firstName = row.findElement(By.xpath("td[3]")).getText();
-			contact.mainEmail = row.findElement(By.xpath("td[4]")).getText();
-			contact.homePhone = row.findElement(By.xpath("td[5]")).getText();
-			contacts.add(contact);
-		}
-		return contacts;	
-	}
+	
 }
