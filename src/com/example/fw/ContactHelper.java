@@ -9,8 +9,8 @@ import com.example.utils.SortedListOf;
 
 public class ContactHelper extends HelperBase {
 	
-	public static boolean CREATION = true;
-	public static boolean MODIFICATION = true;
+	public static boolean EDIT = true;
+	public static boolean DETAILS = false;
 	private SortedListOf<NewContactData> cachedGroups;
 
 	public ContactHelper(ApplicationManager manager) {
@@ -27,66 +27,111 @@ public class ContactHelper extends HelperBase {
 	private void rebuildCache() {
 		cachedGroups = new SortedListOf<NewContactData>();
 		
+		manager.navigateTo().mainPage();
 		List<WebElement> rows = driver.findElements(By.xpath("//*[@name='entry']"));
 		for (WebElement row : rows) {
+			String lastName = row.findElement(By.xpath("td[2]")).getText();
+			String firstName = row.findElement(By.xpath("td[3]")).getText();
+			String mainEmail = row.findElement(By.xpath("td[4]")).getText();
+			String homePhone = row.findElement(By.xpath("td[5]")).getText();
 			NewContactData contact =  new NewContactData();
-			contact.lastName = row.findElement(By.xpath("td[2]")).getText();
-			contact.firstName = row.findElement(By.xpath("td[3]")).getText();
-			contact.mainEmail = row.findElement(By.xpath("td[4]")).getText();
-			contact.homePhone = row.findElement(By.xpath("td[5]")).getText();
+			contact.withLastName(lastName)
+				.withFirstName(firstName)
+				.withMainEmail(mainEmail)
+				.withHomePhone(homePhone);
 			cachedGroups.add(contact);
 		}
 	}
-
-	public void fillAddNewContactForm(NewContactData newContact) {
-		type(By.name("firstname"), newContact.firstName);
-		type(By.name("lastname"), newContact.lastName);
-		type(By.name("address"), newContact.adress);
-		type(By.name("home"), newContact.homePhone);
-		type(By.name("mobile"), newContact.mobilePhone);
-		type(By.name("work"), newContact.workPhone);
-		type(By.name("email"), newContact.mainEmail);
-		type(By.name("email2"), newContact.secondEmail);
-		selectByText(By.name("bday"), newContact.birthDay);
-		selectByText(By.name("bmonth"), newContact.birthMonth);
-		type(By.name("byear"), newContact.birthYear);
-		selectByIndex(By.name("new_group"), newContact.group);
-		type(By.name("address2"), newContact.secondAdress);
-		type(By.name("phone2"), newContact.home);
+	
+	public ContactHelper createNewContact(NewContactData newContact) {
+		goToAddNewPage();
+	    fillAddNewContactForm(newContact);
+	    submitCreationForm();
+	    returnToHomePage();
+	    rebuildCache();
+		return this;
 	}
-
-	public void goToAddNewPage() {
-		click(By.linkText("add new"));
-	}
-
-	public void returnToHomePage() {
-		click(By.linkText("home page"));
+	
+	public ContactHelper modifyContact(int index, NewContactData contactData, boolean modifyPage) {
+		if(modifyPage == EDIT){
+			initEditContact(index);
+		} else {
+			if(modifyPage == DETAILS){
+			initDetailsContact(index);
+			}
+		}
+		fillAddNewContactForm(contactData);
+		submitContactModification();
+		returnToHomePage();
 		rebuildCache();
+		return this;
 	}
 	
-	public void submitCreationForm() {
+	public ContactHelper deleteContact(int index) {
+		initEditContact(index);
+		submitContactDeletion();
+		returnToHomePage();
+		rebuildCache();
+		return this;
+	}
+	
+	public ContactHelper fillAddNewContactForm(NewContactData newContact) {
+		type(By.name("firstname"), newContact.getFirstName());
+		type(By.name("lastname"), newContact.getLastName());
+		type(By.name("address"), newContact.getAdress());
+		type(By.name("home"), newContact.getHome());
+		type(By.name("mobile"), newContact.getMobilePhone());
+		type(By.name("work"), newContact.getWorkPhone());
+		type(By.name("email"), newContact.getMainEmail());
+		type(By.name("email2"), newContact.getSecondEmail());
+		selectByText(By.name("bday"), newContact.getBirthDay());
+		selectByText(By.name("bmonth"), newContact.getBirthMonth());
+		type(By.name("byear"), newContact.getBirthYear());
+		selectByIndex(By.name("new_group"), newContact.getGroup());
+		type(By.name("address2"), newContact.getSecondAdress());
+		type(By.name("phone2"), newContact.getHome());
+		return this;
+	}
+
+	public ContactHelper goToAddNewPage() {
+		click(By.linkText("add new"));
+		return this;
+	}
+
+	public ContactHelper returnToHomePage() {
+		click(By.linkText("home page"));
+		return this;
+	}
+	
+	public ContactHelper submitCreationForm() {
 	    click(By.name("submit"));
+	    cachedGroups = null;
+	    return this;
 	}
 	
-	public void initEditContact(int index){
+	public ContactHelper initEditContact(int index){
 		click(By.xpath("//tr[@name='entry'][" + (index+1) + "]//a[contains(@href,'edit')]"));
+		return this;
 	}
 	
-	public void initDetailsContact(int index){
+	public ContactHelper initDetailsContact(int index){
 		click(By.xpath("//tr[@name='entry'][" + (index+1) + "]//a[contains(@href,'view')]"));
+		goToModifyContact();
+		return this;
 	}
 	
-	public void submitContactModification(){
+	public ContactHelper submitContactModification(){
 		click(By.name("update"));
+		return this;
 	}
 	
-	public void goToModifyContact(){
+	public ContactHelper goToModifyContact(){
 		click(By.name("modifiy"));
+		return this;
 	}
 	
-	public void deleteContact(){
+	public ContactHelper submitContactDeletion(){
 		click(By.xpath("//input[@value='Delete']"));
+		return this;
 	}
-	
-	
 }

@@ -46,21 +46,20 @@ public class TestBase {
 	public Iterator<Object[]> randomValidContactGenerator(){
 		List<Object[]> list = new ArrayList<Object[]>();
 		for(int i = 0; i < 5; i++){
-			NewContactData newContact = new NewContactData();
-			newContact.firstName = generateRandomString();
-			newContact.lastName = generateRandomString();
-			newContact.adress = generateRandomString();
-			newContact.homePhone = generatePhoneNumber();
-			newContact.mobilePhone = generatePhoneNumber();
-			newContact.workPhone = generatePhoneNumber();
-			newContact.mainEmail = generateEmail();
-			newContact.secondEmail = generateEmail();
-			newContact.birthDay = generateBirthDate().get(0);
-			newContact.birthMonth = generateBirthDate().get(1);
-			newContact.birthYear = generateBirthDate().get(2);
-			newContact.secondAdress = generateRandomString();
-			newContact.home = generateRandomString();
-			
+			NewContactData newContact = new NewContactData()
+					.withFirstName(generateRandomString())
+					.withLastName(generateRandomString())
+					.withAdress(generateRandomString())
+					.withHomePhone(generatePhoneNumber())
+					.withMobilePhone(generatePhoneNumber())
+					.withWorkPhone(generatePhoneNumber())
+					.withMainEmail(generateEmail())
+					.withSecondEmail(generateEmail())
+					.withBirthDay(generateBirthDate().get(0))
+					.withBirthMonth(generateBirthDate().get(1))
+					.withBirthYear(generateBirthDate().get(2))
+					.withSecondAdress(generateRandomString())
+					.withHome(generateRandomString());
 		    list.add(new Object[]{newContact});
 		}
 		return list.iterator();

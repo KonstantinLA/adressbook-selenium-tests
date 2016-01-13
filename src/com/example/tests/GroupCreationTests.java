@@ -9,7 +9,6 @@ public class GroupCreationTests extends TestBase {
 	
   @Test(dataProvider = "randomValidGroupGenerator")
   public void testGroupCreationWithValidData(GroupData group) throws Exception {
-	app.navigateTo().mainPage();
     
     //save old state
     SortedListOf<GroupData> oldList = app.getGroupHelper().getGroups();

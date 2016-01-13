@@ -1,9 +1,10 @@
 package com.example.tests;
 
-import static org.testng.Assert.assertEquals;
-
-import java.util.Collections;
-import java.util.List;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static com.example.fw.ContactHelper.EDIT;
+import static com.example.fw.ContactHelper.DETAILS;
+import com.example.utils.SortedListOf;
 import java.util.Random;
 
 import org.testng.annotations.Test;
@@ -12,53 +13,40 @@ public class ContactModifyTests extends TestBase {
 	
 	@Test(dataProvider = "randomValidContactGenerator")
 	public void modifySomeContactFromEditPage(NewContactData contactData){
-		app.navigateTo().mainPage();
 		
 		//save old state
-		List<NewContactData> oldList = app.getContactHelper().getContacts();
+		SortedListOf<NewContactData> oldList = app.getContactHelper().getContacts();
 		
 		//action
 		Random rnd = new Random();
 	    int index = rnd.nextInt(oldList.size() - 1);
 		
-		app.getContactHelper().initEditContact(index);
-		app.getContactHelper().fillAddNewContactForm(contactData);
-		app.getContactHelper().submitContactModification();
-		app.getContactHelper().returnToHomePage();
+	    app.getContactHelper().modifyContact(index, contactData, EDIT);
 		
 		//save new state
-		List<NewContactData> newList = app.getContactHelper().getContacts();
+	    SortedListOf<NewContactData> newList = app.getContactHelper().getContacts();
 		
 		//compare states
-		oldList.remove(index);
-		oldList.add(contactData);
-	    Collections.sort(oldList);
-	    assertEquals(newList, oldList);
-		
+	    assertThat(newList, equalTo(oldList.without(index).withAdded(contactData)));
 	}
 	
 	@Test(dataProvider = "randomValidContactGenerator")
 	public void modifySomeContactFromDetailsPage(NewContactData contactData){
-		app.navigateTo().mainPage();
-		//app.navigateTo().goToHomePage();
 		
-		List<NewContactData> oldList = app.getContactHelper().getContacts();
+		//save old state
+		SortedListOf<NewContactData> oldList = app.getContactHelper().getContacts();
 		
+		//action
 		Random rnd = new Random();
 	    int index = rnd.nextInt(oldList.size() - 1);
 	    
-		app.getContactHelper().initDetailsContact(index);
-		app.getContactHelper().goToModifyContact();
-		app.getContactHelper().fillAddNewContactForm(contactData);
-		app.getContactHelper().submitContactModification();
-		app.getContactHelper().returnToHomePage();
+	    app.getContactHelper().modifyContact(index, contactData, DETAILS);
 		
-		List<NewContactData> newList = app.getContactHelper().getContacts();
+	    //save new state
+	    SortedListOf<NewContactData> newList = app.getContactHelper().getContacts();
 		
-		oldList.remove(index);
-		oldList.add(contactData);
-	    Collections.sort(oldList);
-	    assertEquals(newList, oldList);
+		//compare states
+		assertThat(newList, equalTo(oldList.without(index).withAdded(contactData)));
 	}
 	
 
