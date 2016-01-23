@@ -13,17 +13,23 @@ public class NavigationHelper extends HelperBase {
 			click(By.linkText("home"));
 		}
 	}
-
-	private boolean onMainPage() {
-		return driver.findElements(By.id("maintable")).size()>0;
-	}
-
+	
 	public void groupsPage() {
 		if(!onGroupsPage()){
 			click(By.linkText("groups"));
 		}
 	}
 	
+	public void printPhonesPage(){
+		if(!onPrintPhonesPage()){
+			click(By.linkText("print phones"));
+		}
+	}
+
+	private boolean onMainPage() {
+		return driver.findElements(By.id("maintable")).size()>0;
+	}
+
 	private boolean onGroupsPage() {
 		if(driver.getCurrentUrl().contains("/group.php") 
 				&& driver.findElements(By.name("new")).size()>0){
@@ -32,4 +38,13 @@ public class NavigationHelper extends HelperBase {
 				return false;
 			}
 		}
+	
+	private boolean onPrintPhonesPage(){
+		if(driver.getCurrentUrl().contains("/view.php?all&print&phones")){
+			return true;
+		} else {
+			return false;
+		}
+				
+	}
 }
