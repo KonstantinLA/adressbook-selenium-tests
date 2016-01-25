@@ -1,19 +1,14 @@
 package com.example.tests;
 
-import java.text.SimpleDateFormat;
-import java.time.Year;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-
-import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import com.example.fw.ApplicationManager;
+import static com.example.tests.GroupDataGenerator.generateRandomGroups;
+import static com.example.tests.ContactDataGenerator.generateRandomContacts;
 
 public class TestBase {
 	
@@ -31,81 +26,27 @@ public class TestBase {
 	
 	@DataProvider
 	public Iterator<Object[]> randomValidGroupGenerator(){
-		List<Object[]> list = new ArrayList<Object[]>();
-		for(int i = 0; i < 5; i++){
-			GroupData group = new GroupData()
-				.withName(generateRandomString())
-				.withHeader(generateRandomString())
-				.withFooter(generateRandomString());
-		    list.add(new Object[]{group});
-		}
-		return list.iterator();
+		return wrapGroupsForDataProvider(generateRandomGroups(5)).iterator();
 	}
 	
+	public static List<Object[]> wrapGroupsForDataProvider(List<GroupData> groups) {
+		List<Object[]> list = new ArrayList<Object[]>();
+		for (GroupData group : groups) {
+			list.add(new Object[]{group});
+		}
+		return list;
+	}
+
 	@DataProvider
 	public Iterator<Object[]> randomValidContactGenerator(){
+		return wrapContactsForDataProvider(generateRandomContacts(5)).iterator();
+	}
+	
+	public static List<Object[]> wrapContactsForDataProvider(List<NewContactData> contacts) {
 		List<Object[]> list = new ArrayList<Object[]>();
-		for(int i = 0; i < 5; i++){
-			NewContactData newContact = new NewContactData()
-					.withFirstName(generateRandomString())
-					.withLastName(generateRandomString())
-					.withAdress(generateRandomString())
-					.withHomePhone(generatePhoneNumber())
-					.withMobilePhone(generatePhoneNumber())
-					.withWorkPhone(generatePhoneNumber())
-					.withMainEmail(generateEmail())
-					.withSecondEmail(generateEmail())
-					.withBirthDay(generateBirthDate().get(0))
-					.withBirthMonth(generateBirthDate().get(1))
-					.withBirthYear(generateBirthDate().get(2))
-					.withSecondAdress(generateRandomString())
-					.withHome(generateRandomString());
-		    list.add(new Object[]{newContact});
+		for (NewContactData contact : contacts) {
+			list.add(new Object[]{contact});
 		}
-		return list.iterator();
-	}
-	
-	public String generateRandomString(){
-		Random rnd = new Random();
-		if(rnd.nextInt(3)==0){
-			return "";
-		} else{
-			return "test" + rnd.nextInt();
-		}
-	}
-	
-	public String generatePhoneNumber(){
-		Random rnd = new Random();
-		String phone = "";
-		phone += rnd.nextInt(Integer.MAX_VALUE);
-		return phone;
-	}
-	
-	public String generateEmail(){
-		String email = "";
-		email = String.format("%s@%s.test", RandomStringUtils.randomAlphabetic(7),RandomStringUtils.randomAlphabetic(7));
-		return email;
-	}
-	
-	public List<String> generateBirthDate(){
-		List<String> birthDate = new ArrayList<>();
-		String day = "";
-		String month = "";
-		String year = "";
-		Random rnd = new Random();
-		day += rnd.nextInt(29);
-		if(day.equals("0")){
-			day = "1";
-		}
-		birthDate.add(day);
-		Date date = new Date();
-		String strDateFormat = "MMMM";
-		SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat, Locale.US);
-		month = sdf.format(date);
-		birthDate.add(month);
-		year = Year.of(1900 + rnd.nextInt(100)).toString();
-		birthDate.add(year);
-		
-		return birthDate;
+		return list;
 	}
 }
