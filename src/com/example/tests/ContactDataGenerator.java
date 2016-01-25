@@ -57,7 +57,7 @@ public class ContactDataGenerator {
 		writer.close();
 	}
 	
-	public static List<NewContactData> loadGroupsFromXmlFile(File file) {
+	public static List<NewContactData> loadContactsFromXmlFile(File file) {
 		XStream xstream = new XStream();
 		xstream.alias("group", NewContactData.class);
 		return (List<NewContactData>) xstream.fromXML(file);
@@ -71,7 +71,7 @@ public class ContactDataGenerator {
 		writer.close();
 	}
 	
-	public static List<NewContactData> loadGroupsFromCsvFile(File file) throws IOException {
+	public static List<NewContactData> loadContactsFromCsvFile(File file) throws IOException {
 		List<NewContactData> list = new ArrayList<NewContactData>();
 		FileReader reader = new FileReader(file);
 		BufferedReader bufferedReader = new BufferedReader(reader);
