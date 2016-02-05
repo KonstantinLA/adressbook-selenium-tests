@@ -1,0 +1,1 @@
+java -cp bin;D:\barancev\xstream-1.4.8\lib\xstream-1.4.8.jar;D:\barancev\xstream-1.4.8\lib\xstream\xpp3_min-1.1.4c.jar;D:\barancev\selenium-server-standalone-2.48.2.jar;D:\barancev\xstream-1.4.8\lib\xstream\xmlpull-1.1.3.1.jar org.testng.TestNG testng-customsuite.xml
