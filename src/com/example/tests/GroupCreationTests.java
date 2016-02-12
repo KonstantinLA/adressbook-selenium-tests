@@ -19,22 +19,31 @@ public class GroupCreationTests extends TestBase {
    public Iterator<Object[]> groupsFromFile() throws IOException {
 		return wrapGroupsForDataProvider(loadGroupsFromXmlFile(new File("groups.xml"))).iterator();
 	}
-	
-
+  
   @Test(dataProvider = "groupsFromFile")
   public void testGroupCreationWithValidData(GroupData group) throws Exception {
     
     //save old state
-    SortedListOf<GroupData> oldList = app.getGroupHelper().getGroups();
+    SortedListOf<GroupData> oldList = app.getModel().getGroups();
     
     //actions
     app.getGroupHelper().createGroup(group);
     
     //save new state
-    SortedListOf<GroupData> newList = app.getGroupHelper().getGroups();
+    SortedListOf<GroupData> newList = app.getModel().getGroups();
     
     //compare states
     assertThat(newList, equalTo(oldList.withAdded(group)));
+    
+    if(wantToCheck()){
+	    if("yes".equals(app.getProperty("check.db"))){
+	    	assertThat(app.getModel().getGroups(), equalTo(app.getHibernateHelper().listGroups()));
+	    }
+	    if("yes".equals(app.getProperty("check.ui"))){
+	    	assertThat(app.getModel().getGroups(), equalTo(app.getGroupHelper().getUiGroups()));
+	    	
+	    }
+    }
   }
 }
 

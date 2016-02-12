@@ -8,31 +8,25 @@ import org.openqa.selenium.WebElement;
 import com.example.tests.GroupData;
 import com.example.utils.SortedListOf;
 
-public class GroupHelper extends HelperBase {
+public class GroupHelper extends WebDriverHelperBase {
 
 	public GroupHelper(ApplicationManager manager) {
 		super(manager);
 	}
 	
-	private SortedListOf<GroupData> cachedGroups;
 	
-	public SortedListOf<GroupData> getGroups() {
-		if(cachedGroups == null){
-			rebuildCache();
-		}
-		return cachedGroups;
-	}
-	
-	private void rebuildCache() {
-		cachedGroups = new SortedListOf<GroupData>();
+	public SortedListOf<GroupData> getUiGroups() {
+		SortedListOf<GroupData> groups = new SortedListOf<GroupData>();
 		
 		manager.navigateTo().groupsPage();
 		List<WebElement> checkboxes = driver.findElements(By.name("selected[]"));
 		for (WebElement checkbox : checkboxes) {
 			String title = checkbox.getAttribute("title");
 			String name = title.substring("Select (".length(), title.length() - ")".length());
-			cachedGroups.add(new GroupData().withName(name));
+			groups.add(new GroupData().withName(name));
 		}
+		
+		return groups;
 	}
 
 	public GroupHelper createGroup(GroupData group) {
@@ -41,7 +35,7 @@ public class GroupHelper extends HelperBase {
 	    fillGroupForm(group);
 	    submitCreationForm();
 	    returnToGroupsPage();
-	    rebuildCache();
+	    manager.getModel().addGroup(group);
 		return this;
 	}
 	
@@ -51,7 +45,7 @@ public class GroupHelper extends HelperBase {
 		fillGroupForm(group);
 		submitGroupModification();
 		returnToGroupsPage();
-		rebuildCache();
+		manager.getModel().removeGroup(index).addGroup(group);
 		return this;
 	}
 
@@ -59,13 +53,12 @@ public class GroupHelper extends HelperBase {
 		selectGroupByIndex(index);
 		submitGroupDeletion();
 		returnToGroupsPage();
-		rebuildCache();
+		manager.getModel().removeGroup(index);
 		return this;
 	}
 
 	public void submitGroupDeletion() {
 		click(By.name("delete"));
-		cachedGroups = null;
 	}
 	
 	public GroupHelper initGroupCreation() {
@@ -104,7 +97,6 @@ public class GroupHelper extends HelperBase {
 	
 	public GroupHelper submitCreationForm() {
 	    click(By.name("submit"));
-	    cachedGroups = null;
 	    return this;
 	}	
 }

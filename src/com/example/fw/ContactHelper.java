@@ -6,25 +6,17 @@ import org.openqa.selenium.WebElement;
 import com.example.tests.NewContactData;
 import com.example.utils.SortedListOf;
 
-public class ContactHelper extends HelperBase {
+public class ContactHelper extends WebDriverHelperBase {
 	
 	public static boolean EDIT = true;
 	public static boolean DETAILS = false;
-	private SortedListOf<NewContactData> cachedGroups;
 
 	public ContactHelper(ApplicationManager manager) {
 		super(manager);
 	}
 	
-	public SortedListOf<NewContactData> getContacts(){
-		if(cachedGroups == null){
-			rebuildCache();
-		}
-		return cachedGroups;
-	}
-	
-	private void rebuildCache() {
-		cachedGroups = new SortedListOf<NewContactData>();
+	public SortedListOf<NewContactData> getUiContacts() {
+		SortedListOf<NewContactData> contacts = new SortedListOf<NewContactData>();
 		
 		manager.navigateTo().mainPage();
 		List<WebElement> rows = driver.findElements(By.xpath("//*[@name='entry']"));
@@ -38,8 +30,9 @@ public class ContactHelper extends HelperBase {
 				.withFirstName(firstName)
 				.withMainEmail(mainEmail)
 				.withHomePhone(homePhone);
-			cachedGroups.add(contact);
+			contacts.add(contact);
 		}
+		return contacts;
 	}
 	
 	public ContactHelper createNewContact(NewContactData newContact) {
@@ -47,7 +40,7 @@ public class ContactHelper extends HelperBase {
 	    fillAddNewContactForm(newContact);
 	    submitCreationForm();
 	    returnToHomePage();
-	    rebuildCache();
+	    manager.getModel().addContact(newContact);
 		return this;
 	}
 	
@@ -62,7 +55,7 @@ public class ContactHelper extends HelperBase {
 		fillAddNewContactForm(contactData);
 		submitContactModification();
 		returnToHomePage();
-		rebuildCache();
+		manager.getModel().removeContact(index).addContact(contactData);
 		return this;
 	}
 	
@@ -70,7 +63,7 @@ public class ContactHelper extends HelperBase {
 		initEditContact(index);
 		submitContactDeletion();
 		returnToHomePage();
-		rebuildCache();
+		manager.getModel().removeContact(index);
 		return this;
 	}
 	
@@ -104,7 +97,6 @@ public class ContactHelper extends HelperBase {
 	
 	public ContactHelper submitCreationForm() {
 	    click(By.name("submit"));
-	    cachedGroups = null;
 	    return this;
 	}
 	

@@ -7,7 +7,7 @@ import com.example.tests.PrintContactData;
 import com.example.utils.SortedListOf;
 import java.util.regex.*;
 
-public class PrintContactHelper extends HelperBase {
+public class PrintContactHelper extends WebDriverHelperBase {
 	
 	public PrintContactHelper(ApplicationManager manager) {
 		super(manager);

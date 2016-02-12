@@ -1,11 +1,13 @@
 package com.example.tests;
 
 public class GroupData implements Comparable<GroupData> {
+	public String id;
 	private String name;
 	private String header;
 	private String footer;
 
-	public GroupData(String groupname, String header, String footer) {
+	public GroupData(String id, String groupname, String header, String footer) {
+		this.id = id;
 		this.name = groupname;
 		this.header = header;
 		this.footer = footer;
@@ -48,6 +50,11 @@ public class GroupData implements Comparable<GroupData> {
 		return this.name.toLowerCase().compareTo(other.name.toLowerCase());
 	}
 
+	public GroupData withId(String id) {
+		this.id = id;
+		return this;
+	}
+	
 	public GroupData withName(String name) {
 		this.name = name;
 		return this;
@@ -62,9 +69,9 @@ public class GroupData implements Comparable<GroupData> {
 		this.footer = footer;
 		return this;
 	}
-
-	public String getName() {
-		return name;
+	
+	public String getId() {
+		return id;
 	}
 
 	public String getHeader() {
@@ -74,6 +81,24 @@ public class GroupData implements Comparable<GroupData> {
 	public String getFooter() {
 		return footer;
 	}
-	
-	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setHeader(String header) {
+		this.header = header;
+	}
+
+	public void setFooter(String footer) {
+		this.footer = footer;
+	}
 }

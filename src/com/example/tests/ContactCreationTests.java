@@ -23,17 +23,27 @@ public class ContactCreationTests extends TestBase {
   public void testNewContactCreation(NewContactData newContact) throws Exception {
 	  	
 	  	//save old state
-	  	SortedListOf<NewContactData> oldList = app.getContactHelper().getContacts();
+	  	SortedListOf<NewContactData> oldList = app.getModel().getContacts(); 
 	  	
 	  	//actions
 	  	app.getContactHelper().createNewContact(newContact);
 	    
 	    
 	    //save new state
-	  	SortedListOf<NewContactData> newList = app.getContactHelper().getContacts();
+	  	SortedListOf<NewContactData> newList = app.getModel().getContacts();
 	    
 	    //compare states
 	    assertThat(newList, equalTo(oldList.withAdded(newContact)));
+	    
+	    if(wantToCheck()){
+		    if("yes".equals(app.getProperty("check.db"))){
+		    	assertThat(app.getModel().getContacts(), equalTo(app.getHibernateHelper().listContacts()));
+		    }
+		    if("yes".equals(app.getProperty("check.ui"))){
+		    	assertThat(app.getModel().getContacts(), equalTo(app.getContactHelper().getUiContacts()));
+		    	
+		    }
+	    }
   }
 }
 
